@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Varahi Marketing</title>
+  <style>
+    @font-face {
+      font-family: 'Brass Mono Code';
+      src: url('path/to/BrassMonoCode.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      background-image: url('./loupe-mono-dark.jpeg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+      color: white;
+      font-family: 'Brass Mono Code', monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .header-container {
+      padding: 10px 20px;
+      margin-top: 20px;
+      border-radius: 20px;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-weight: 100;
+      font-size: 24px;
+    }
+
+    .header-line {
+      border-bottom: 1px solid white;
+      margin: 0 20px;
+    }
+
+    .contact-link {
+      color: white;
+      text-decoration: none;
+    }
+
+    .contact-link:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      padding: 20px 0;
+    }
+
+    .product-card {
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .product-card a {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .product-card img {
+      max-width: 100%;
+      height: 200px;
+      border: 1px solid white;
+      border-radius: 5px;
+    }
+
+    .product-title {
+      margin: 10px 0;
+      font-size: 18px;
+      font-weight: 100;
+    }
+
+    .product-price {
+      font-weight: 100;
+      margin: 10px 0;
+    }
+
+    .image-preview {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 8px;
+      z-index: 1000;
+      display: none;
+    }
+
+    .image-preview img {
+      max-width: 80vw;
+      max-height: 80vh;
+    }
+
+    .close-preview {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: white;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    @media (max-width: 768px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .product-card {
+        text-align: left;
+      }
+
+      .product-card img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+      footer p {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header-container">
+    <header>
+      <h1>Dark Store</h1>
+      <a href="#" class="contact-link">Contact</a>
+    </header>
+  </div>
+  <div class="header-line"></div>
+
+  <div class="container">
+    <div class="products-grid" id="products"></div>
+  </div>
+
+  <div class="image-preview" id="image-preview">
+    <span class="close-preview" onclick="closePreview()">&times;</span>
+    <img src="" alt="Preview" id="preview-image">
+  </div>
+
+  <footer>
+    <p>© 2025 by Varahi Marketing</p>
+    <div>
+      <a href="#">Privacy</a> •
+      <a href="#">Terms</a>
+    </div>
+  </footer>
+
+  <script>
+    const products = [
+      {
+        title: "Product 1",
+        price: 29.99,
+        image: "./loupe-mono-dark.jpeg",
+        link: "https://example.com/product1"
+      },
+      {
+        title: "Product 2",
+        price: 39.99,
+        image: "./loupe-mono-dark.jpeg",
+        link: "https://example.com/product2"
+      },
+      {
+        title: "Product 3",
+        price: 19.99,
+        image: "./loupe-mono-dark.jpeg",
+        link: "https://example.com/product3"
+      },
+      {
+        title: "Product 4",
+        price: 49.99,
+        image: "./loupe-mono-dark.jpeg",
+        link: "https://example.com/product4"
+      }
+    ];
+
+    function displayProducts() {
+      const productsGrid = document.getElementById('products');
+      products.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+
+        productCard.innerHTML = `
+                    <a href="${product.link}" onclick="event.preventDefault(); showPreview('${product.image}')"> 
+                        <img src="${product.image}" alt="${product.title}">
+                        <div class="product-info">
+                            <h3 class="product-title">${product.title}</h3>
+                            <p class="product-price">${product.price.toLocaleString('en-IN', { maximumFractionDigits: 2, style: 'currency', currency: 'INR' })}</p>
+                        </div>
+                    </a>
+                `;
+
+        productsGrid.appendChild(productCard);
+      });
+    }
+
+    function showPreview(imageUrl) {
+      const preview = document.getElementById('image-preview');
+      const previewImage = document.getElementById('preview-image');
+      previewImage.src = imageUrl;
+      preview.style.display = 'block';
+    }
+
+    function closePreview() {
+      const preview = document.getElementById('image-preview');
+      preview.style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      displayProducts();
+    });
+  </script>
+
+</body>
+</html>
